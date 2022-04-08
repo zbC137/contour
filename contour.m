@@ -117,14 +117,14 @@ for t = 0:sim.step:sim.t
     e = fs-data.cd;
     while ndelta>1e-4
         
-        index
+        index;
         
         delta = -pinv(param.Gs'*param.Gs)*param.Gs'*e;
         param.coff = param.coff+delta;
         fs = param.Gs*param.coff;
         e = fs-data.cd;
         error = norm(e);
-        ndelta = norm(delta)
+        ndelta = norm(delta);
         
         index = index+1;
         
