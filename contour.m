@@ -17,8 +17,10 @@ sim.c = zeros(2*sim.N, 1);      % initial positions
 for i = 1:1:sim.N
     
     s = (i-1)*sim.s_step;
-    sim.c(2*i-1) = 8*cos(2*pi*s)*0.8;
-    sim.c(2*i) = 8*sin(2*pi*s)*0.8;
+%     sim.c(2*i-1) = 8*cos(2*pi*s)*0.8;
+%     sim.c(2*i) = 8*sin(2*pi*s)*0.8;
+    sim.c(2*i-1) = normrnd(0, 1);
+    sim.c(2*i) = normrnd(0,1);
     
 end
 
@@ -79,12 +81,14 @@ figure(1)
 
 for t = 0:sim.step:sim.t
     
-    if t>140
-        sim.L = sim.L3;
-    elseif t>70
+    flag = round(rand(1,1)*2);
+    
+    if flag==0
+        sim.L = sim.L1;
+    elseif flag==1
         sim.L = sim.L2;
     else
-        sim.L = sim.L1;
+        sim.L = sim.L3;
     end
     
     sim.L = kron(sim.L, eye(2));
