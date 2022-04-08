@@ -8,8 +8,8 @@ function [u, s, ds] = controller(k, L, G, N, c, sd)
 %         s = G\c;
 %     end    
 %     s = pinv(G'*G)*G'*c;
-    s = G'*pinv(G*G')*c;
-% s = pinv(G)*c;
+%     s = G'*pinv(G*G')*c;
+    s = pinv(G)*c;
     
     ds = s - sd;
     
