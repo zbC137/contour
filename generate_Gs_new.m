@@ -3,7 +3,7 @@ function G = generate_Gs_new(len_list, N)
 G = [];
 num = size(len_list, 2);
 
-for i=1:num
+for i=1:num-1
     
     l = sum(len_list(1:i));
     

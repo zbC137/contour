@@ -3,12 +3,13 @@ close all;
 
 tic;
 %% parameters
-param.Ns = 6;
+param.Ns = 4;
+% param.Ns = 3;
 param.step= 0.001;
 % param.Gs = generate_Gs(param.step, 1, param.Ns);
 
 %% simulation
-sim.N = 14;     % agent number
+sim.N = 10;     % agent number
 sim.t = 200;    % simulation time
 sim.step = 0.1;
 sim.s_step = 1/sim.N;
@@ -24,7 +25,7 @@ for i = 1:1:sim.N
     
 end
 
-sim.Gs = generate_Gs(0, sim.s_step, 1-sim.s_step, param.Ns);
+sim.Gs = generate_Gs(0, sim.s_step, 1-sim.s_step/2, param.Ns);
 
 % Laplacian
 sim.L1 = generate_L(sim.N, 3);
@@ -98,10 +99,13 @@ for t = 0:sim.step:sim.t
     
     data.cd = [];
     
-    for s = 0:0.001:1
+    for s = 0:0.001:0.999
         
-        x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
-        y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
+%         x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
+%         y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
+
+        x = 0.01*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
+        y = 0.01*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
         
         data.cd = [data.cd; [x; y]];
         
