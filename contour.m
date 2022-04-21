@@ -101,8 +101,8 @@ for t = 0:sim.step:sim.t
     
     for s = 0:param.step:1
         
-%         x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
-%         y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
+        x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
+        y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
 
         x = 0.01*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
         y = 0.01*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
