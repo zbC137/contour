@@ -3,13 +3,13 @@ close all;
 
 tic;
 %% parameters
-param.Ns = 4;
+param.Ns = 12;
 % param.Ns = 3;
 param.step= 0.001;
 % param.Gs = generate_Gs(param.step, 1, param.Ns);
 
 %% simulation
-sim.N = 10;     % agent number
+sim.N = 20;     % agent number
 sim.t = 200;    % simulation time
 sim.step = 0.1;
 sim.s_step = 1/sim.N;
@@ -99,7 +99,7 @@ for t = 0:sim.step:sim.t
     
     data.cd = [];
     
-    for s = 0:0.001:0.999
+    for s = 0:param.step:1
         
 %         x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
 %         y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
@@ -111,7 +111,7 @@ for t = 0:sim.step:sim.t
         
     end
     
-    [len, len_list] = cLength(0, 1, 0.001, t);
+    [len, len_list] = cLength(0, 1, param.step, t);
     param.Gs = generate_Gs_new(len_list, param.Ns);
     
     % curve fitting
