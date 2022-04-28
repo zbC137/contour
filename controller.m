@@ -1,4 +1,4 @@
-function [u, s, ds] = controller(k, L, G, N, c, sd)
+function [u, s, ds] = controller(k, L, G, c, sd)
  
 %     s = (G'*G)\G'*c;
 %     s = G'*pinv(G*G')*c;
@@ -6,7 +6,7 @@ function [u, s, ds] = controller(k, L, G, N, c, sd)
     
     ds = s - sd;
     
-    u = -k*L*G*ds;
+    u = -k*L*G*ds - G*ds;
 %     u = -k*G*ds;
     
 end

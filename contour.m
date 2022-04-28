@@ -3,7 +3,7 @@ close all;
 
 tic;
 %% parameters
-param.Ns = 12;
+param.Ns = 6;
 % param.Ns = 3;
 param.step= 0.001;
 % param.Gs = generate_Gs(param.step, 1, param.Ns);
@@ -141,11 +141,8 @@ for t = 0:sim.step:sim.t
 %     sim.Gs = generate_Gs(0.005*t, sim.s_step, 0.005*t+1-sim.s_step/2, param.Ns);
 
     % control
-     [ctrl.u, sim.coff, sim.dcoff] = controller(ctrl.k, sim.L, sim.Gs,...
-                                         4*param.Ns+2, sim.c, param.coff);
+     [ctrl.u, sim.coff, sim.dcoff] = controller(ctrl.k, sim.L, sim.Gs, sim.c, param.coff);
         
-     u = sim.Gs*sim.dcoff;
-     ctrl.u = ctrl.u - u;
     % integration
     tt = [t, t+sim.step];    
     [~, Temp] = ode45(@(t, X)dynamics(t, X, ctrl.u), tt, X0, ...
