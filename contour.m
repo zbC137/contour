@@ -17,11 +17,11 @@ sim.s_step = 1/sim.N;
 sim.c = zeros(2*sim.N, 1);      % initial positions
 for i = 1:1:sim.N
     
-    s = (i-1)*sim.s_step;
-%     sim.c(2*i-1) = 8*cos(2*pi*s)*0.8;
+%     s = (i-1)*sim.s_step;
+%     sim.c(2*i-1) = 8*cos(2*pi*s)*0.8+10;
 %     sim.c(2*i) = 8*sin(2*pi*s)*0.8;
-    sim.c(2*i-1) = normrnd(0, 1);
-    sim.c(2*i) = normrnd(0,1);
+    sim.c(2*i-1) = normrnd(5, 0.1);
+    sim.c(2*i) = normrnd(5, 0.1);
     
 end
 
@@ -220,7 +220,8 @@ figure(34)
 plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'k',...
         data.f1.cds(1:2:end,end), data.f1.cds(2:2:end,end), 'r',...
         data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end),'g',...
-        data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*', 'LineWidth', 1);
+        data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*',...
+        data.f1.c(1:2:end, :)', data.f1.c(2:2:end, :)', 'LineWidth', 1);
 xlabel('x positions'); ylabel('y positions');
 grid on;
 

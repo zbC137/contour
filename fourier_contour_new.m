@@ -18,40 +18,20 @@ param.sd = [param.z1; param.z2; param.z3; param.z4; param.z5; 0; 0];
 %% simulation
 sim.t = 20;
 sim.dt = 0.01;
-sim.N = 12;
+sim.N = 20;
 
 sim.c = zeros(sim.N, 1);
 for i = 1:2*sim.N
     
-    sim.c(i) = normrnd(0,0.1);
+    sim.c(i) = normrnd(5,1);
     
 end
 
 sim.step = 2*pi/sim.N;
 sim.G = generate_G(sim.step, param.rho-0.5*sim.step, param.N, 1);
 sim.k = 2;
-if sim.k == 0
-    sim.L = eye(2*sim.N);
-else
-    sim.L = eye(2*sim.N)*sim.k*2;
-end
-
-for i = 1:sim.N
-    for j = i-sim.k:i+sim.k
-        if j==i
-            continue;
-        elseif j<=0
-            temp = sim.N + j;
-        elseif j>sim.N
-            temp = j - sim.N;
-        else
-            temp = j;
-        end
-        
-        sim.L(2*i-1,2*temp-1) = -1;
-        sim.L(2*i, 2*temp) = -1;
-    end
-end
+sim.L = generate_L(sim.N, sim.k);
+sim.L = kron(sim.L, eye(2));
 
 data.u = [];
 data.t = [];
@@ -65,8 +45,7 @@ X0 = sim.c;
 for i=0:sim.dt:sim.t
     
     % controller
-    [ctrl.u, sim.s, sim.ds] = controller(ctrl.k, sim.L, sim.G,...
-                                         4*param.N+2, sim.c, param.sd);
+    [ctrl.u, sim.s, sim.ds] = controller(ctrl.k, sim.L, sim.G, sim.c, param.sd);
     norm(sim.ds)
                                      
     % integration
