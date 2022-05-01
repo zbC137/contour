@@ -6,7 +6,10 @@ function [u, s, ds] = controller(k, L, G, c, sd)
     
     ds = s - sd;
     
-    u = -k*L*G*ds - G*ds;
+    dc = c - G*sd;
+    
+    u = -k*L*G*ds - dc;
+%     u = -k*L*dc - dc;
 %     u = -k*G*ds;
     
 end

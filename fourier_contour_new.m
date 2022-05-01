@@ -21,9 +21,16 @@ sim.dt = 0.01;
 sim.N = 20;
 
 sim.c = zeros(sim.N, 1);
-for i = 1:2*sim.N
+sim.s_step = 1/sim.N;
+for i = 1:1:sim.N
     
-    sim.c(i) = normrnd(5,1);
+    s = i*1.5*sim.s_step;
+    sim.c(2*i-1) = 8*cos(2*pi*s)*0.8+10;
+    sim.c(2*i) = 8*sin(2*pi*s)*0.8+5;
+%     sim.c(2*i-1) = normrnd(5, 0.1);
+%     sim.c(2*i) = normrnd(5, 0.1);
+%     sim.c(2*i-1) = -4.2+0.4*i;
+%     sim.c(2*i) = -4.2+0.4*i; 
     
 end
 

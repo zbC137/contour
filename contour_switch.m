@@ -68,15 +68,7 @@ data.c0 = sim.c;
 ctrl.k = 2;
 X0 = sim.c;
 
-% velocity compensation
-% u = zeros(2*sim.N, 1);
-% for i = 1:sim.N
-%     
-%     u(2*i-1) = 0.01*4;
-%     u(2*i) = 0.01*2;
-%     
-% end
-
+% show the real-time simulation
 figure(1)
 
 for t = 0:sim.step:sim.t

@@ -17,19 +17,22 @@ sim.s_step = 1/sim.N;
 sim.c = zeros(2*sim.N, 1);      % initial positions
 for i = 1:1:sim.N
     
-%     s = (i-1)*sim.s_step;
-%     sim.c(2*i-1) = 8*cos(2*pi*s)*0.8+10;
-%     sim.c(2*i) = 8*sin(2*pi*s)*0.8;
-    sim.c(2*i-1) = normrnd(5, 0.1);
-    sim.c(2*i) = normrnd(5, 0.1);
+%     s = i*sim.s_step;
+%     sim.c(2*i-1) = 8*cos(2*pi*s)*0.2+10;
+%     sim.c(2*i) = 8*sin(2*pi*s)*0.2;
+    sim.c(2*i-1) = normrnd(5, 1);
+    sim.c(2*i) = normrnd(5, 1);
+%     sim.c(2*i-1) = 10;
+%     sim.c(2*i) = 10; 
     
 end
+sim.c0 = sim.c;
 
 sim.Gs = generate_Gs(0, sim.s_step, 1-sim.s_step/2, param.Ns);
 
 % Laplacian
-sim.L = generate_L(sim.N, 2);
-sim.L = kron(sim.L, eye(2));
+sim.L2 = generate_L(sim.N, 2);
+sim.L = kron(sim.L2, eye(2));
 
 % data recording
 % data.ref = sim.Gs*param.coff;
@@ -42,37 +45,17 @@ data.f1.cds = [];
 data.f1.cs = [];
 data.f1.c = [];
 data.c0 = sim.c;
+data.e = [];
 
 % controller parameters
 ctrl.k = 2;
 X0 = sim.c;
 
-% velocity compensation
-% u = zeros(2*sim.N, 1);
-% for i = 1:sim.N
-%     
-%     u(2*i-1) = 0.01*4;
-%     u(2*i) = 0.01*2;
-%     
-% end
-
+% show the real-time simulation
 figure(1)
 
 for t = 0:sim.step:sim.t
-    
-%     flag = round(rand(1,1)*2);
-%     flag = round(2.4*abs(sin(0.01*pi*t)));
-%     
-%     if flag==0
-%         sim.L = sim.L1;
-%     elseif flag==1
-%         sim.L = sim.L2;
-%     else
-%         sim.L = sim.L3;
-%     end
-%     
-%     sim.L = kron(sim.L, eye(2));
-    
+       
     data.cd = [];
     
     for s = 0:param.step:1
@@ -113,6 +96,8 @@ for t = 0:sim.step:sim.t
         
     end
     data.cds = param.Gs*param.coff;
+    
+    data.e = [data.e, sim.Gs*pinv(sim.Gs)*sim.c-sim.Gs*param.coff];
     
 %     sim.Gs = generate_Gs(0.005*t, sim.s_step, 0.005*t+1-sim.s_step/2, param.Ns);
 
@@ -253,12 +238,13 @@ grid on;
 xlabel('time(s)'); ylabel('coefficient errors');
 
 figure(7)
-subplot(1,3,1)
-plot(graph(-sim.L1+diag(diag(sim.L1))));
-title('(a)');
-subplot(1,3,2)
 plot(graph(-sim.L2+diag(diag(sim.L2))));
-title('(b)');
-subplot(1,3,3)
-plot(graph(-sim.L3+diag(diag(sim.L3))));
-title('(c)');
+
+figure(8)
+plot(data.t, data.e(1:2:end, :), 'LineWidth', 1);
+grid on;
+xlabel('time(s)'); ylabel('x-position errrors');
+
+figure(9)
+plot(data.t, data.e(2:2:end, :), 'LineWidth', 1);
+xlabel('time(s)'); ylabel('y-position errrors');
