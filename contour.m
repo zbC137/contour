@@ -20,10 +20,10 @@ for i = 1:1:sim.N
 %     s = i*sim.s_step;
 %     sim.c(2*i-1) = 8*cos(2*pi*s)*0.2+10;
 %     sim.c(2*i) = 8*sin(2*pi*s)*0.2;
-    sim.c(2*i-1) = normrnd(5, 1);
-    sim.c(2*i) = normrnd(5, 1);
-%     sim.c(2*i-1) = 10;
-%     sim.c(2*i) = 10; 
+%     sim.c(2*i-1) = normrnd(5, 1);
+%     sim.c(2*i) = normrnd(5, 1);
+    sim.c(2*i-1) = -4.2+0.4*i;
+    sim.c(2*i) = -4.2+0.4*i; 
     
 end
 sim.c0 = sim.c;
@@ -46,6 +46,7 @@ data.f1.cs = [];
 data.f1.c = [];
 data.c0 = sim.c;
 data.e = [];
+data.xe = [];
 
 % controller parameters
 ctrl.k = 2;
@@ -97,7 +98,8 @@ for t = 0:sim.step:sim.t
     end
     data.cds = param.Gs*param.coff;
     
-    data.e = [data.e, sim.Gs*pinv(sim.Gs)*sim.c-sim.Gs*param.coff];
+    data.e = [data.e, sim.c-sim.Gs*param.coff];
+    data.xe = [data.xe, sim.Gs*pinv(sim.Gs)*sim.c-si m.Gs*param.coff];
     
 %     sim.Gs = generate_Gs(0.005*t, sim.s_step, 0.005*t+1-sim.s_step/2, param.Ns);
 
@@ -243,8 +245,19 @@ plot(graph(-sim.L2+diag(diag(sim.L2))));
 figure(8)
 plot(data.t, data.e(1:2:end, :), 'LineWidth', 1);
 grid on;
-xlabel('time(s)'); ylabel('x-position errrors');
+xlabel('time(s)'); ylabel('x-position errors');
 
 figure(9)
 plot(data.t, data.e(2:2:end, :), 'LineWidth', 1);
-xlabel('time(s)'); ylabel('y-position errrors');
+xlabel('time(s)'); ylabel('y-position errors');
+grid on;
+
+figure(10)
+plot(data.t, data.xe(1:2:end, :), 'LineWidth', 1);
+grid on;
+xlabel('time(s)'); ylabel('x-position errors fake');
+
+figure(11)
+plot(data.t, data.xe(2:2:end, :), 'LineWidth', 1);
+xlabel('time(s)'); ylabel('y-position errors fake');
+grid on; 
