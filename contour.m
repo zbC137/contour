@@ -9,7 +9,7 @@ param.step= 0.001;
 % param.Gs = generate_Gs(param.step, 1, param.Ns);
 
 %% simulation
-sim.N = 20;     % agent number
+sim.N = 8;     % agent number
 sim.t = 200;    % simulation time
 sim.step = 0.1;
 sim.s_step = 1/sim.N;
@@ -20,10 +20,10 @@ for i = 1:1:sim.N
 %     s = i*sim.s_step;
 %     sim.c(2*i-1) = 8*cos(2*pi*s)*0.2+10;
 %     sim.c(2*i) = 8*sin(2*pi*s)*0.2;
-%     sim.c(2*i-1) = normrnd(5, 1);
-%     sim.c(2*i) = normrnd(5, 1);
-    sim.c(2*i-1) = -4.2+0.4*i;
-    sim.c(2*i) = -4.2+0.4*i; 
+    sim.c(2*i-1) = normrnd(5, 2);
+    sim.c(2*i) = normrnd(5, 2);
+%     sim.c(2*i-1) = -4.2+0.4*i;
+%     sim.c(2*i) = -4.2+0.4*i; 
     
 end
 sim.c0 = sim.c;
@@ -99,7 +99,7 @@ for t = 0:sim.step:sim.t
     data.cds = param.Gs*param.coff;
     
     data.e = [data.e, sim.c-sim.Gs*param.coff];
-    data.xe = [data.xe, sim.Gs*pinv(sim.Gs)*sim.c-si m.Gs*param.coff];
+    data.xe = [data.xe, sim.Gs*pinv(sim.Gs)*sim.c-sim.Gs*param.coff];
     
 %     sim.Gs = generate_Gs(0.005*t, sim.s_step, 0.005*t+1-sim.s_step/2, param.Ns);
 
@@ -161,6 +161,7 @@ plot(data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1), 'k',...
         data.f1.cs(1:2:end,1), data.f1.cs(2:2:end,1),'g',...
         data.c0(1:2:end), data.c0(2:2:end), 'b*', 'LineWidth', 1);
 xlabel('x positions'); ylabel('y positions');
+axis([-10,20,-10,15]);
 grid on;
 
 figure(32)
@@ -169,6 +170,7 @@ plot(data.f1.cd(1:2:end,701), data.f1.cd(2:2:end,701), 'k',...
         data.f1.cs(1:2:end,701), data.f1.cs(2:2:end,701),'g',...
         data.f1.c(1:2:end, 701), data.f1.c(2:2:end, 701), 'b*', 'LineWidth', 1);
 xlabel('x positions'); ylabel('y positions');
+axis([-10,20,-10,15]);
 grid on;
 
 figure(33)
@@ -177,15 +179,21 @@ plot(data.f1.cd(1:2:end,1401), data.f1.cd(2:2:end,1401), 'k',...
         data.f1.cs(1:2:end,1401), data.f1.cs(2:2:end,1401),'g',...
         data.f1.c(1:2:end, 1401), data.f1.c(2:2:end, 1401), 'b*', 'LineWidth', 1);
 xlabel('x positions'); ylabel('y positions');
+axis([-10,20,-10,15]);
 grid on;
 
 figure(34)
+% plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'k',...
+%         data.f1.cds(1:2:end,end), data.f1.cds(2:2:end,end), 'r',...
+%         data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end),'g',...
+%         data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*',...
+%         data.f1.c(1:2:end, :)', data.f1.c(2:2:end, :)', 'LineWidth', 1);
 plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'k',...
         data.f1.cds(1:2:end,end), data.f1.cds(2:2:end,end), 'r',...
         data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end),'g',...
-        data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*',...
-        data.f1.c(1:2:end, :)', data.f1.c(2:2:end, :)', 'LineWidth', 1);
+        data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*', 'LineWidth', 1);
 xlabel('x positions'); ylabel('y positions');
+axis([-10,20,-10,15]);
 grid on;
 
 % axis([-10, 25,-12, 23]);
