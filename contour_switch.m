@@ -9,7 +9,7 @@ param.step= 0.001;
 % param.Gs = generate_Gs(param.step, 1, param.Ns);
 
 %% simulation
-sim.N = 20;     % agent number
+sim.N = 14;     % agent number
 sim.t = 200;    % simulation time
 sim.step = 0.1;
 sim.s_step = 1/sim.N;
@@ -20,37 +20,37 @@ for i = 1:1:sim.N
 %     s = (i-1)*sim.s_step;
 %     sim.c(2*i-1) = 8*cos(2*pi*s)*0.8+10;
 %     sim.c(2*i) = 8*sin(2*pi*s)*0.8;
-    sim.c(2*i-1) = normrnd(5, 0.1);
-    sim.c(2*i) = normrnd(5, 0.1);
+    sim.c(2*i-1) = normrnd(5, 2);
+    sim.c(2*i) = normrnd(5, 2);
     
 end
 
 sim.Gs = generate_Gs(0, sim.s_step, 1-sim.s_step/2, param.Ns);
 
 % Laplacian
-sim.L1 = generate_L(sim.N, 3);
-sim.L2 = generate_L(sim.N, 2);
-sim.L3 = generate_L(sim.N, 1);
+% sim.L1 = generate_L(sim.N, 3);
+% sim.L2 = generate_L(sim.N, 2);
+% sim.L3 = generate_L(sim.N, 1);
 
 % l1 = generate_L(7, 2);
 % l2 = eye(14);
 % sim.L = blkdiag(l1, l1);
 
-% sim.L = [4, -1, -1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0
-%                 -1, 4, -1, -1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0
-%                 -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0
-%                 0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0
-%                 0, 0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0
-%                 -1, 0, 0, -1, -1, 4, -1, 0, 0, 0, 0, 0, 0, 0
-%                 -1, -1, 0, 0, -1, -1, 4, 0, 0, 0, 0, 0, 0, 0
-%                 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0
-%                 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0
-%                 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0
-%                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0
-%                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0
-%                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0
-%                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
-% sim.L = kron(sim.L, eye(2));
+sim.L = [2, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                -1, 3, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0
+                0, 0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0
+                0, 0, 0, -1, -1, 3, -1, 0, 0, 0, 0, 0, 0, 0
+                0, 0, 0, 0, -1, -1, 2, 0, 0, 0, 0, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
+sim.L = kron(sim.L, eye(2));
 
 % data recording
 % data.ref = sim.Gs*param.coff;
@@ -74,17 +74,17 @@ figure(1)
 for t = 0:sim.step:sim.t
     
 %     flag = round(rand(1,1)*2);
-    flag = round(2.4*abs(sin(0.01*pi*t)));
-    
-    if flag==0
-        sim.L = sim.L1;
-    elseif flag==1
-        sim.L = sim.L2;
-    else
-        sim.L = sim.L3;
-    end
-    
-    sim.L = kron(sim.L, eye(2));
+%     flag = round(2.4*abs(sin(0.01*pi*t)));
+%     
+%     if flag==0
+%         sim.L = sim.L1;
+%     elseif flag==1
+%         sim.L = sim.L2;
+%     else
+%         sim.L = sim.L3;
+%     end
+%     
+%     sim.L = kron(sim.L, eye(2));
     
     data.cd = [];
     

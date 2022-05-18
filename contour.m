@@ -9,7 +9,7 @@ param.step= 0.001;
 % param.Gs = generate_Gs(param.step, 1, param.Ns);
 
 %% simulation
-sim.N = 8;     % agent number
+sim.N = 20;     % agent number
 sim.t = 200;    % simulation time
 sim.step = 0.1;
 sim.s_step = 1/sim.N;
@@ -251,21 +251,11 @@ figure(7)
 plot(graph(-sim.L2+diag(diag(sim.L2))));
 
 figure(8)
-plot(data.t, data.e(1:2:end, :), 'LineWidth', 1);
+plot(data.t, data.e(:, :), 'LineWidth', 1);
 grid on;
-xlabel('time(s)'); ylabel('x-position errors');
+xlabel('time(s)'); ylabel('position errors');
 
 figure(9)
-plot(data.t, data.e(2:2:end, :), 'LineWidth', 1);
-xlabel('time(s)'); ylabel('y-position errors');
-grid on;
-
-figure(10)
-plot(data.t, data.xe(1:2:end, :), 'LineWidth', 1);
-grid on;
-xlabel('time(s)'); ylabel('x-position errors fake');
-
-figure(11)
-plot(data.t, data.xe(2:2:end, :), 'LineWidth', 1);
-xlabel('time(s)'); ylabel('y-position errors fake');
+plot(data.t, data.xe(:, :), 'LineWidth', 1);
+xlabel('time(s)'); ylabel('x_e');
 grid on; 
