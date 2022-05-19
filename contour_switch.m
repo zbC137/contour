@@ -28,15 +28,15 @@ end
 sim.Gs = generate_Gs(0, sim.s_step, 1-sim.s_step/2, param.Ns);
 
 % Laplacian
-% sim.L1 = generate_L(sim.N, 3);
+sim.L1 = generate_L(sim.N, 2);
 % sim.L2 = generate_L(sim.N, 2);
-% sim.L3 = generate_L(sim.N, 1);
+sim.L3 = generate_L(sim.N, 0);
 
 % l1 = generate_L(7, 2);
 % l2 = eye(14);
 % sim.L = blkdiag(l1, l1);
 
-sim.L = [2, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+sim.L2= [2, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                 -1, 3, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                 -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0
                 0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0
@@ -50,7 +50,7 @@ sim.L = [2, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
-sim.L = kron(sim.L, eye(2));
+% sim.L = kron(sim.L, eye(2));
 
 % data recording
 % data.ref = sim.Gs*param.coff;
@@ -63,6 +63,8 @@ data.f1.cds = [];
 data.f1.cs = [];
 data.f1.c = [];
 data.c0 = sim.c;
+data.e = [];
+data.xe = [];
 
 % controller parameters
 ctrl.k = 2;
@@ -84,7 +86,15 @@ for t = 0:sim.step:sim.t
 %         sim.L = sim.L3;
 %     end
 %     
-%     sim.L = kron(sim.L, eye(2));
+
+    if t<=70
+        sim.L = sim.L1;
+    elseif t>140
+        sim.L = sim.L3;
+    else
+        sim.L = sim.L2;
+    end
+    sim.L = kron(sim.L, eye(2));
     
     data.cd = [];
     
@@ -126,6 +136,9 @@ for t = 0:sim.step:sim.t
         
     end
     data.cds = param.Gs*param.coff;
+    
+    data.e = [data.e, sim.c-sim.Gs*param.coff];
+    data.xe = [data.xe, sim.Gs*pinv(sim.Gs)*sim.c-sim.Gs*param.coff];
     
 %     sim.Gs = generate_Gs(0.005*t, sim.s_step, 0.005*t+1-sim.s_step/2, param.Ns);
 
@@ -187,6 +200,7 @@ plot(data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1), 'k',...
         data.f1.cs(1:2:end,1), data.f1.cs(2:2:end,1),'g',...
         data.c0(1:2:end), data.c0(2:2:end), 'b*', 'LineWidth', 1);
 xlabel('x positions'); ylabel('y positions');
+axis([-10,20,-10,15]);
 grid on;
 
 figure(32)
@@ -195,6 +209,7 @@ plot(data.f1.cd(1:2:end,701), data.f1.cd(2:2:end,701), 'k',...
         data.f1.cs(1:2:end,701), data.f1.cs(2:2:end,701),'g',...
         data.f1.c(1:2:end, 701), data.f1.c(2:2:end, 701), 'b*', 'LineWidth', 1);
 xlabel('x positions'); ylabel('y positions');
+axis([-10,20,-10,15]);
 grid on;
 
 figure(33)
@@ -203,15 +218,21 @@ plot(data.f1.cd(1:2:end,1401), data.f1.cd(2:2:end,1401), 'k',...
         data.f1.cs(1:2:end,1401), data.f1.cs(2:2:end,1401),'g',...
         data.f1.c(1:2:end, 1401), data.f1.c(2:2:end, 1401), 'b*', 'LineWidth', 1);
 xlabel('x positions'); ylabel('y positions');
+axis([-10,20,-10,15]);
 grid on;
 
 figure(34)
+% plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'k',...
+%         data.f1.cds(1:2:end,end), data.f1.cds(2:2:end,end), 'r',...
+%         data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end),'g',...
+%         data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*',...
+%         data.f1.c(1:2:end, :)', data.f1.c(2:2:end, :)', 'LineWidth', 1);
 plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'k',...
         data.f1.cds(1:2:end,end), data.f1.cds(2:2:end,end), 'r',...
         data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end),'g',...
-        data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*',...
-        data.f1.c(1:2:end, :)', data.f1.c(2:2:end, :)', 'LineWidth', 1);
+        data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*', 'LineWidth', 1);
 xlabel('x positions'); ylabel('y positions');
+axis([-10,20,-10,15]);
 grid on;
 
 % axis([-10, 25,-12, 23]);
@@ -275,3 +296,13 @@ title('(b)');
 subplot(1,3,3)
 plot(graph(-sim.L3+diag(diag(sim.L3))));
 title('(c)');
+
+figure(8)
+plot(data.t, data.e(:, :), 'LineWidth', 1);
+grid on;
+xlabel('time(s)'); ylabel('position errors');
+
+figure(9)
+plot(data.t, data.xe(:, :), 'LineWidth', 1);
+xlabel('time(s)'); ylabel('x_e');
+grid on; 
