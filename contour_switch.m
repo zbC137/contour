@@ -167,15 +167,15 @@ for t = 0:sim.step:sim.t
     data.f1.cs = [data.f1.cs, data.cs];
     
     % plot real-time data        
-    plot(data.cd(1:2:end), data.cd(2:2:end), 'k',...
-        data.cds(1:2:end), data.cds(2:2:end), 'r',...
-        data.cs(1:2:end), data.cs(2:2:end),'g',...
-        data.c(1:2:end, end), data.c(2:2:end, end), 'b*', 'LineWidth', 1);
-    grid on;
-    axis([-10, 25,-12, 23]);
-    legend('Original Curve', 'Re-paramerterized Curve', 'Real-time Curve',...
-        'Agents Real-time Positions',  'Location', 'NorthWest');
-    drawnow;
+%     plot(data.cd(1:2:end), data.cd(2:2:end), 'k',...
+%         data.cds(1:2:end), data.cds(2:2:end), 'r',...
+%         data.cs(1:2:end), data.cs(2:2:end),'g',...
+%         data.c(1:2:end, end), data.c(2:2:end, end), 'b*', 'LineWidth', 1);
+%     grid on;
+%     axis([-10, 25,-12, 23]);
+%     legend('Original Curve', 'Re-paramerterized Curve', 'Real-time Curve',...
+%         'Agents Real-time Positions',  'Location', 'NorthWest');
+%     drawnow;
     
     t
     
@@ -184,6 +184,9 @@ end
 toc;
 
 %% plotting
+% gif
+plotGif('switch', data, param.Ns);
+
 figure(2)
 plot(data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1), 'k', 'LineWidth', 1);
 hold on;

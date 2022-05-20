@@ -9,7 +9,7 @@ param.step= 0.001;
 % param.Gs = generate_Gs(param.step, 1, param.Ns);
 
 %% simulation
-sim.N = 20;     % agent number
+sim.N = 8;     % agent number
 sim.t = 200;    % simulation time
 sim.step = 0.1;
 sim.s_step = 1/sim.N;
@@ -53,7 +53,6 @@ ctrl.k = 2;
 X0 = sim.c;
 
 % show the real-time simulation
-figure(1)
 
 for t = 0:sim.step:sim.t
        
@@ -127,16 +126,16 @@ for t = 0:sim.step:sim.t
     data.f1.c = [data.f1.c, data.c(:,end)];
     data.f1.cs = [data.f1.cs, data.cs];
     
-    % plot real-time data        
-    plot(data.cd(1:2:end), data.cd(2:2:end), 'k',...
-        data.cds(1:2:end), data.cds(2:2:end), 'r',...
-        data.cs(1:2:end), data.cs(2:2:end),'g',...
-        data.c(1:2:end, end), data.c(2:2:end, end), 'b*', 'LineWidth', 1);
-    grid on;
-    axis([-10, 25,-12, 23]);
-    legend('Original Curve', 'Re-paramerterized Curve', 'Real-time Curve',...
-        'Agents Real-time Positions',  'Location', 'NorthWest');
-    drawnow;
+    % plot real-time data       
+%     plot(data.cd(1:2:end), data.cd(2:2:end), 'k',...
+%         data.cds(1:2:end), data.cds(2:2:end), 'r',...
+%         data.cs(1:2:end), data.cs(2:2:end),'g',...
+%         data.c(1:2:end, end), data.c(2:2:end, end), 'b*', 'LineWidth', 1);
+%     grid on;
+%     axis([-10, 25,-12, 23]);
+%     legend('Original Curve', 'Re-paramerterized Curve', 'Real-time Curve',...
+%         'Agents Real-time Positions',  'Location', 'NorthWest');
+%     drawnow;
     
     t
     
@@ -145,6 +144,13 @@ end
 toc;
 
 %% plotting
+% gif
+if sim.N >= 2*param.Ns+1
+    plotGif('sim', data, param.Ns);
+else
+    plotGif('less', data, param.Ns);
+end
+
 figure(2)
 plot(data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1), 'k', 'LineWidth', 1);
 hold on;
