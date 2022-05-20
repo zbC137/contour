@@ -287,13 +287,13 @@ grid on;
 xlabel('time(s)'); ylabel('coefficient errors');
 
 figure(7)
-subplot(1,3,1)
+subplot(2,2,1)
 plot(graph(-sim.L1+diag(diag(sim.L1))));
 title('(a)');
-subplot(1,3,2)
+subplot(2,2,2)
 plot(graph(-sim.L2+diag(diag(sim.L2))));
 title('(b)');
-subplot(1,3,3)
+subplot(2,2,3)
 plot(graph(-sim.L3+diag(diag(sim.L3))));
 title('(c)');
 
