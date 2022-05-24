@@ -1,15 +1,14 @@
-clc; clear;
-close all;
+function contour(option, Ns, N)
 
 tic;
 %% parameters
-param.Ns = 6;
+param.Ns = Ns;
 % param.Ns = 3;
 param.step= 0.001;
 % param.Gs = generate_Gs(param.step, 1, param.Ns);
 
 %% simulation
-sim.N = 8;     % agent number
+sim.N = N;     % agent number
 sim.t = 200;    % simulation time
 sim.step = 0.1;
 sim.s_step = 1/sim.N;
@@ -31,8 +30,26 @@ sim.c0 = sim.c;
 sim.Gs = generate_Gs(0, sim.s_step, 1-sim.s_step/2, param.Ns);
 
 % Laplacian
-sim.L2 = generate_L(sim.N, 2);
-sim.L = kron(sim.L2, eye(2));
+if strcmp(option, 'switch')
+    sim.L1 = generate_L(sim.N, 2);
+    sim.L2= [2, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                -1, 3, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0
+                0, 0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0
+                0, 0, 0, -1, -1, 3, -1, 0, 0, 0, 0, 0, 0, 0
+                0, 0, 0, 0, -1, -1, 2, 0, 0, 0, 0, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
+    sim.L3 = generate_L(sim.N, 0);
+else
+    sim.L1 = generate_L(sim.N, 2);
+end
 
 % data recording
 % data.ref = sim.Gs*param.coff;
@@ -55,22 +72,38 @@ X0 = sim.c;
 % show the real-time simulation
 
 for t = 0:sim.step:sim.t
+    
+    if strcmp(option, 'switch')
+        if t<=70
+            sim.L = sim.L1;
+        elseif t>140
+            sim.L = sim.L3;
+        else
+            sim.L = sim.L2;
+        end
+    else
+        sim.L = sim.L1;
+    end
+    
+    sim.L = kron(sim.L, eye(2));
        
     data.cd = [];
     
     for s = 0:param.step:1
         
-%         x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
-%         y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
-
-        x = 0.01*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
-        y = 0.01*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
+        if strcmp(option, 'fault')
+            x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
+            y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
+        else
+            x = 0.01*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
+            y = 0.01*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
+        end
         
         data.cd = [data.cd; [x; y]];
         
     end
     
-    [len, len_list] = cLength(0, 1, param.step, t);
+    [~, len_list] = cLength(0, 1, param.step, t, option);
     param.Gs = generate_Gs_new(len_list, param.Ns);
     
     % curve fitting
@@ -145,123 +178,8 @@ toc;
 
 %% plotting
 % gif
-if sim.N >= 2*param.Ns+1
-    plotGif('sim', data, param.Ns);
-else
-    plotGif('less', data, param.Ns);
+plotGif (data, param.Ns, option);
+% figures
+plotFigure(data, sim, option);
+
 end
-
-figure(2)
-plot(data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1), 'k', 'LineWidth', 1);
-hold on;
-plot(data.f1.cd(1:2:end,1001), data.f1.cd(2:2:end,1001), 'r','LineWidth', 1);
-hold on;
-plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'b','LineWidth', 1);
-xlabel('x positions'); ylabel('y positions');
-legend('Curve at t=0s', 'Curve at t=100s', 'Curve at t=200s',  'Location', 'Best');
-grid on;
-
-figure(31)
-plot(data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1), 'k',...
-        data.f1.cds(1:2:end,1), data.f1.cds(2:2:end,1), 'r',...
-        data.f1.cs(1:2:end,1), data.f1.cs(2:2:end,1),'g',...
-        data.c0(1:2:end), data.c0(2:2:end), 'b*', 'LineWidth', 1);
-xlabel('x positions'); ylabel('y positions');
-axis([-10,20,-10,15]);
-grid on;
-
-figure(32)
-plot(data.f1.cd(1:2:end,701), data.f1.cd(2:2:end,701), 'k',...
-        data.f1.cds(1:2:end,701), data.f1.cds(2:2:end,701), 'r',...
-        data.f1.cs(1:2:end,701), data.f1.cs(2:2:end,701),'g',...
-        data.f1.c(1:2:end, 701), data.f1.c(2:2:end, 701), 'b*', 'LineWidth', 1);
-xlabel('x positions'); ylabel('y positions');
-axis([-10,20,-10,15]);
-grid on;
-
-figure(33)
-plot(data.f1.cd(1:2:end,1401), data.f1.cd(2:2:end,1401), 'k',...
-        data.f1.cds(1:2:end,1401), data.f1.cds(2:2:end,1401), 'r',...
-        data.f1.cs(1:2:end,1401), data.f1.cs(2:2:end,1401),'g',...
-        data.f1.c(1:2:end, 1401), data.f1.c(2:2:end, 1401), 'b*', 'LineWidth', 1);
-xlabel('x positions'); ylabel('y positions');
-axis([-10,20,-10,15]);
-grid on;
-
-figure(34)
-% plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'k',...
-%         data.f1.cds(1:2:end,end), data.f1.cds(2:2:end,end), 'r',...
-%         data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end),'g',...
-%         data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*',...
-%         data.f1.c(1:2:end, :)', data.f1.c(2:2:end, :)', 'LineWidth', 1);
-plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'k',...
-        data.f1.cds(1:2:end,end), data.f1.cds(2:2:end,end), 'r',...
-        data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end),'g',...
-        data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*', 'LineWidth', 1);
-xlabel('x positions'); ylabel('y positions');
-axis([-10,20,-10,15]);
-grid on;
-
-% axis([-10, 25,-12, 23]);
-% xlabel('x positions'); ylabel('y positions');
-% legend('Original Curve', 'Re-paramerterized Curve', 'Real-time Curve',...
-%     'Agents Real-time Positions',  'Location', 'NorthWest');
-
-% figure(4)
-% plot(data.cds(1:2:end), data.cds(2:2:end), 'LineWidth', 1, 'Color', 'k');
-% hold on; grid on;
-% plot(data.c(1:2:end, end), data.c(2:2:end, end), 'o', 'LineWidth', 1, 'Color', [241, 64, 64]/255 ); hold on;
-% for i=1:sim.N    
-%     for j = i-sim.k:i+sim.k
-%         if j==i
-%             continue;
-%         elseif j<=0
-%             temp = sim.N + j;
-%         elseif j>sim.N
-%             temp = j - sim.N;
-%         else
-%             temp = j;
-%         end
-%         
-%         plot([data.c(2*i-1,end); data.c(2*temp-1,end)],...
-%             [data.c(2*i,end); data.c(2*temp,end)],...
-%             '--', 'LineWidth', 1, 'Color', [26, 111, 223]/255);
-%         hold on;
-%     end    
-% end
-% % set(gca, 'FontSize',11);
-% xlabel('x positions'); 
-% ylabel('y positions');
-% legend('Re-parameterized Contour', 'Agents Final Position',...
-%     'Links between Neighbors','Location', 'NorthWest');
-
-figure(5)
-for i=1:2*sim.N
-    
-    plot(data.t, data.u(i, :), 'LineWidth', 1); hold on;
-    
-end
-grid on;
-xlabel('time(s)'); ylabel('Inputs');
-
-figure(6)
-for i=1:size(sim.dcoff, 1)
-    
-    plot(data.t, data.dcoff(i, :), 'LineWidth', 1); hold on;
-    
-end
-grid on;
-xlabel('time(s)'); ylabel('coefficient errors');
-
-figure(7)
-plot(graph(-sim.L2+diag(diag(sim.L2))));
-
-figure(8)
-plot(data.t, data.e(:, :), 'LineWidth', 1);
-grid on;
-xlabel('time(s)'); ylabel('position errors');
-
-figure(9)
-plot(data.t, data.xe(:, :), 'LineWidth', 1);
-xlabel('time(s)'); ylabel('x_e');
-grid on; 

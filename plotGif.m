@@ -1,4 +1,4 @@
-function plotGif(flag, data, N)
+function plotGif(data, N, flag)
 
 pic_num = 1;
 
