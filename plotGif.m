@@ -1,5 +1,7 @@
 function plotGif(data, N, flag)
 
+close all;
+
 pic_num = 1;
 
 for i = 1:50:size(data.t, 2)
@@ -70,10 +72,10 @@ I3 = frame2im(F3);
 [I3, map3] = rgb2ind(I3, 256);
 
 if pic_num == 1
-    imwrite(I3, map3, ['pic\new contour\', flag, '.gif'], 'gif', ...
+    imwrite(I3, map3, ['pic\gif\', flag, '.gif'], 'gif', ...
         'LoopCount', inf);
 else
-    imwrite(I3, map3, ['pic\new contour\', flag, '.gif'], 'gif', ...
+    imwrite(I3, map3, ['pic\gif\', flag, '.gif'], 'gif', ...
         'WriteMode', 'append');
 end
 

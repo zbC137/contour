@@ -9,8 +9,8 @@ while 1
         prompt1 = 'Continue or not? (y/n): ';
         selection = input(prompt1, 's');
         if selection ~= 'y'
-            close all;
-            clc; clear;
+%             close all;
+%             clc; clear;
             break;
         end
     end
@@ -25,7 +25,12 @@ while 1
             % run simulation
             Ns = input('Please set the number of harmonics: ');
             N = input('Please set the number of agents: ');
-            contour(option, Ns, N);
+            [data, sim] = contour(option, Ns, N);
+            
+            % gif
+            plotGif (data, Ns, option);
+            % figures
+            plotFigure(data, sim, option);
             
         otherwise
             counter = 1;
