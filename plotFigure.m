@@ -82,18 +82,19 @@ if strcmp(flag, 'switch')
     subplot('Position', [0.07, 0.55, 0.4, 0.4])
     plot(graph(-sim.L1+diag(diag(sim.L1))), 'LineWidth', 1.5,  'EdgeColor', 'r',...
         'MarkerSize', 5, 'NodeFontSize', 12);
-    title('(a)')
+    title('(a)');
+    set(gca, 'FontSize', 12);
     
     subplot('Position', [0.55, 0.55, 0.4, 0.4])
     plot(graph(-sim.L2+diag(diag(sim.L2))), 'LineWidth', 1.5,  'EdgeColor', 'r',...
         'MarkerSize', 5, 'NodeFontSize', 12);
-    title('(b)')
+    title('(b)');
+    set(gca, 'FontSize', 12);
     
     subplot('Position', [0.3, 0.07, 0.4, 0.4])
     plot(graph(-sim.L3+diag(diag(sim.L3))), 'LineWidth', 1.5,  'EdgeColor', 'r',...
         'MarkerSize', 5, 'NodeFontSize', 12);
-    title('(c)')
-    
+    title('(c)'); 
     set(gca, 'FontSize', 12);
 else
     set(gcf,'Position', [400, 200, 600, 500], 'Color', 'White');

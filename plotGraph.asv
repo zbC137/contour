@@ -14,4 +14,5 @@ subplot('Position', [0.525, 0.1, 0.425, 0.77]);
 plot(graph(-L2+diag(diag(L2))), 'LineWidth', 1.5,  'EdgeColor', 'r',...
 'MarkerSize', 5, 'NodeFontSize', 12);
 title('(b)');
+
 set(gca, 'FontSize', 12);
