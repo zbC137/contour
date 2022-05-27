@@ -79,7 +79,7 @@ figure(5)
 if strcmp(flag, 'switch')
     set(gcf,'Position', [300, 100, 720, 600], 'Color', 'White');
     
-    subplot('Position', [0.07, 0.55 0.4, 0.4])
+    subplot('Position', [0.07, 0.55, 0.4, 0.4])
     plot(graph(-sim.L1+diag(diag(sim.L1))), 'LineWidth', 1.5,  'EdgeColor', 'r',...
         'MarkerSize', 5, 'NodeFontSize', 12);
     title('(a)')
