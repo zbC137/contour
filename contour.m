@@ -52,6 +52,10 @@ else
     sim.L1 = generate_L(sim.N, 2);
 end
 
+% curve length recording
+param.G_cl = generate_Gs(0, 1/2400, 1, param.Ns);
+size(param.G_cl)
+
 % data recording
 % data.ref = sim.Gs*param.coff;
 data.u = [];
@@ -65,6 +69,7 @@ data.f1.c = [];
 data.c0 = sim.c;
 data.e = [];
 data.xe = [];
+data.length = [];
 
 % controller parameters
 ctrl.k = 2;
@@ -104,7 +109,7 @@ for t = 0:sim.step:sim.t
         
     end
     
-    [~, len_list] = cLength(0, 1, param.step, t, option);
+    [len, len_list] = cLength(0, 1, param.step, t, option);
     param.Gs = generate_Gs_new(len_list, param.Ns);
     
     % curve fitting
@@ -159,6 +164,9 @@ for t = 0:sim.step:sim.t
     data.f1.cds = [data.f1.cds, data.cds];
     data.f1.c = [data.f1.c, data.c(:,end)];
     data.f1.cs = [data.f1.cs, data.cs];
+    
+    cur_len = len_evol(param.G_cl, sim.coff, sim.N);
+    data.length = [data.length, [len/sim.N; cur_len]];
     
     % plot real-time data       
 %     plot(data.cd(1:2:end), data.cd(2:2:end), 'k',...

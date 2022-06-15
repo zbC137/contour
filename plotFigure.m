@@ -129,5 +129,11 @@ title('(b) Position Errors');
 % xlabel('time(s)'); ylabel('x_e');
 % grid on; 
 
+figure(7)
+plot(data.t, data.length(1,:), 'LineWidth', 1, 'Color', 'r');
+hold on;
+plot(data.t, data.length(2:end,:), 'LineWidth', 1, 'Color', 'k');
+grid on;
+
 end
 
