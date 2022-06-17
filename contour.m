@@ -54,7 +54,7 @@ end
 
 % curve length recording
 param.G_cl = generate_Gs(0, 1/2400, 1, param.Ns);
-size(param.G_cl)
+% size(param.G_cl);
 
 % data recording
 % data.ref = sim.Gs*param.coff;
@@ -166,7 +166,8 @@ for t = 0:sim.step:sim.t
     data.f1.cs = [data.f1.cs, data.cs];
     
     cur_len = len_evol(param.G_cl, sim.coff, sim.N);
-    data.length = [data.length, [len/sim.N; cur_len]];
+    ref_len = len_evol(param.G_cl, param.coff, sim.N);
+    data.length = [data.length, [len/sim.N; cur_len; ref_len]];
     
     % plot real-time data       
 %     plot(data.cd(1:2:end), data.cd(2:2:end), 'k',...

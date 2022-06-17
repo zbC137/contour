@@ -132,7 +132,15 @@ title('(b) Position Errors');
 figure(7)
 plot(data.t, data.length(1,:), 'LineWidth', 1, 'Color', 'r');
 hold on;
-plot(data.t, data.length(2:end,:), 'LineWidth', 1, 'Color', 'k');
+plot(data.t, data.length(2:sim.N+1,:), 'LineWidth', 1, 'Color', 'k');
+hold on;
+plot(data.t, data.length(sim.N+2:end,:), 'LineWidth', 1, 'Color', 'b');
+grid on;
+
+figure(8)
+plot(data.t, data.length(1,:), 'LineWidth', 1, 'Color', 'r');
+hold on;
+plot(data.t, data.length(sim.N+2:end,:), 'LineWidth', 1, 'Color', 'k');
 grid on;
 
 end
