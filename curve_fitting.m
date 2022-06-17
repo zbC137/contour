@@ -131,8 +131,8 @@ nrsme1 = sqrt(sum(temp1.^2)/param.N)./data.length1(1,:);
 nrsme2 = sqrt(sum(temp2.^2)/param.N)./data.length2(1,:);
 
 num = param.t/param.dt+1;
-plt.rsme1 = [nrsme1(1,1:num); nrsme1(1, num+1:2*num); nrsme1(1, 2*num+1:end)];
-plt.rsme2 = [nrsme2(1,1:num); nrsme2(1, num+1:2*num); nrsme2(1, 2*num+1:end)];
+plt.nrsme1 = [nrsme1(1,1:num); nrsme1(1, num+1:2*num); nrsme1(1, 2*num+1:end)];
+plt.nrsme2 = [nrsme2(1,1:num); nrsme2(1, num+1:2*num); nrsme2(1, 2*num+1:end)];
 plt.t = data.t;
 
 figure(2)
