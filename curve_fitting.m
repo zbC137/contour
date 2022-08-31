@@ -136,7 +136,7 @@ plt.nrsme2 = [nrsme2(1,1:num); nrsme2(1, num+1:2*num); nrsme2(1, 2*num+1:end)];
 plt.t = data.t;
 
 figure(2)
-plot(plt.t, plt.rsme1(:,:), 'LineWidth', 1);
+plot(plt.t, plt.nrsme1(:,:), 'LineWidth', 1);
 hold on;
-plot(plt.t, plt.rsme2(:,:), 'LineWidth', 1);
+plot(plt.t, plt.nrsme2(:,:), 'LineWidth', 1);
 grid on;
