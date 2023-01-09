@@ -2,7 +2,7 @@ clc; clear
 close all;
 
 %% input arguments to select simulation setup
-counter = s;
+counter = 0;
 while 1
     
     if counter > 0
