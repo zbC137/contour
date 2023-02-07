@@ -1,4 +1,4 @@
-function [data, sim] = contour(option, Ns, N)
+function [data, sim] = contour(option, dys, Ns, N)
 
 tic;
 %% parameters
@@ -13,16 +13,16 @@ sim.t = 200;    % simulation time
 sim.step = 0.1;
 sim.s_step = 1/sim.N;
 
-sim.c = zeros(2*sim.N, 1);      % initial positions
+sim.c = zeros(2*sim.N, 1);      % initial positions and orientations
 for i = 1:1:sim.N
     
-%     s = i*sim.s_step;
-%     sim.c(2*i-1) = 8*cos(2*pi*s)*0.2+10;
-%     sim.c(2*i) = 8*sin(2*pi*s)*0.2;
-%     sim.c(2*i-1) = normrnd(5, 2);
-%     sim.c(2*i) = normrnd(5, 2);
+    %     s = i*sim.s_step;
+    %     sim.c(2*i-1) = 8*cos(2*pi*s)*0.2+10;
+    %     sim.c(2*i) = 8*sin(2*pi*s)*0.2;
+    %     sim.c(2*i-1) = normrnd(5, 2);
+    %     sim.c(2*i) = normrnd(5, 2);
     sim.c(2*i-1) = 13;
-    sim.c(2*i) = -8.4+0.4*i; 
+    sim.c(2*i) = -8.4+0.4*i;
     
 end
 sim.c0 = sim.c;
@@ -33,20 +33,20 @@ sim.Gs = generate_Gs(0, sim.s_step, 1-sim.s_step/2, param.Ns);
 if strcmp(option, 'switch')
     sim.L1 = generate_L(sim.N, 2);
     sim.L2= [2, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                -1, 3, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                0, 0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0
-                0, 0, 0, -1, -1, 3, -1, 0, 0, 0, 0, 0, 0, 0, 0
-                0, 0, 0, 0, -1, -1, 2, 0, 0, 0, 0, 0, 0, 0, 0
-                0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
-                0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
+        -1, 3, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 0, -1, -1, 4, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 0, 0, -1, -1, 3, -1, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 0, 0, 0, -1, -1, 2, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
     sim.L3 = generate_L(sim.N, 0);
 else
     sim.L1 = generate_L(sim.N, 2);
@@ -71,9 +71,16 @@ data.e = [];
 data.xe = [];
 data.length = [];
 
+if strcmp(dys, 'nonholonomic')
+    sim.theta = zeros(sim.N, 1) + pi/2;
+    data.theta = sim.theta;
+    X0 = [sim.c; sim.theta];
+else
+    X0 = sim.c;
+end
+
 % controller parameters
 ctrl.k = 2;
-X0 = sim.c;
 
 % show the real-time simulation
 
@@ -92,7 +99,7 @@ for t = 0:sim.step:sim.t
     end
     
     sim.L = kron(sim.L, eye(2));
-       
+    
     data.cd = [];
     
     for s = 0:param.step:1
@@ -121,9 +128,6 @@ for t = 0:sim.step:sim.t
     fs = param.Gs*param.coff;
     e = fs-data.cd;
     while ndelta>1e-4
-        
-        index;
-        
         delta = -pinv(param.Gs'*param.Gs)*param.Gs'*e;
         param.coff = param.coff+delta;
         fs = param.Gs*param.coff;
@@ -139,23 +143,37 @@ for t = 0:sim.step:sim.t
     data.e = [data.e, sim.c-sim.Gs*param.coff];
     data.xe = [data.xe, sim.Gs*pinv(sim.Gs)*sim.c-sim.Gs*param.coff];
     
-%     sim.Gs = generate_Gs(0.005*t, sim.s_step, 0.005*t+1-sim.s_step/2, param.Ns);
-
-    % control
-     [ctrl.u, sim.coff, sim.dcoff] = controller(ctrl.k, sim.L, sim.Gs, sim.c, param.coff);
-        
-    % integration
-    tt = [t, t+sim.step];    
-    [~, Temp] = ode45(@(t, X)dynamics(t, X, ctrl.u), tt, X0, ...
-        odeset('RelTol', 1e-6, 'AbsTol', 1e-6));
+    %     sim.Gs = generate_Gs(0.005*t, sim.s_step, 0.005*t+1-sim.s_step/2, param.Ns);
     
-    % update
-    X0 = Temp(end,:)';
-    sim.c = X0;
+    % control
+    [ctrl.u, sim.coff, sim.dcoff] = controller(t, sim.N, ctrl.k, sim.L, sim.Gs, X0, ...
+        param.coff, dys);
+    
+    % integration
+    tt = [t, t+sim.step];
+    
+    if strcmp(dys, 'nonholonomic')
+        [~, Temp] = ode45(@(t, X)dynamics2(t, X, ctrl.u, sim.N), tt, X0, ...
+            odeset('RelTol', 1e-6, 'AbsTol', 1e-6));
+        
+        % update
+        X0 = Temp(end,:)';
+        sim.c = X0(1:2*sim.N);
+        sim.theta = X0(2*sim.N+1:end);
+        
+        data.theta = [data.theta, sim.theta];
+    else
+        [~, Temp] = ode45(@(t, X)dynamics1(t, X, ctrl.u), tt, X0, ...
+            odeset('RelTol', 1e-6, 'AbsTol', 1e-6));
+        
+        % update
+        X0 = Temp(end,:)';
+        sim.c = X0;
+    end
     
     % saving data
     data.t = [data.t, t];
-    data.c = [data.c, X0];
+    data.c = [data.c, sim.c];
     data.u = [data.u, ctrl.u];
     data.dcoff = [data.dcoff, sim.dcoff];
     data.cs = param.Gs*sim.coff;
@@ -169,16 +187,16 @@ for t = 0:sim.step:sim.t
     ref_len = len_evol(param.G_cl, param.coff, sim.N);
     data.length = [data.length, [len/sim.N; cur_len; ref_len]];
     
-    % plot real-time data       
-%     plot(data.cd(1:2:end), data.cd(2:2:end), 'k',...
-%         data.cds(1:2:end), data.cds(2:2:end), 'r',...
-%         data.cs(1:2:end), data.cs(2:2:end),'g',...
-%         data.c(1:2:end, end), data.c(2:2:end, end), 'b*', 'LineWidth', 1);
-%     grid on;
-%     axis([-10, 25,-12, 23]);
-%     legend('Original Curve', 'Re-paramerterized Curve', 'Real-time Curve',...
-%         'Agents Real-time Positions',  'Location', 'NorthWest');
-%     drawnow;
+    % plot real-time data
+    %     plot(data.cd(1:2:end), data.cd(2:2:end), 'k',...
+    %         data.cds(1:2:end), data.cds(2:2:end), 'r',...
+    %         data.cs(1:2:end), data.cs(2:2:end),'g',...
+    %         data.c(1:2:end, end), data.c(2:2:end, end), 'b*', 'LineWidth', 1);
+    %     grid on;
+    %     axis([-10, 25,-12, 23]);
+    %     legend('Original Curve', 'Re-paramerterized Curve', 'Real-time Curve',...
+    %         'Agents Real-time Positions',  'Location', 'NorthWest');
+    %     drawnow;
     
     t
     

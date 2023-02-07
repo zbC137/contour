@@ -9,8 +9,8 @@ while 1
         prompt1 = 'Continue or not? (y/n): ';
         selection = input(prompt1, 's');
         if selection ~= 'y'
-%             close all;
-%             clc; clear;
+            %             close all;
+            %             clc; clear;
             break;
         end
     end
@@ -22,19 +22,28 @@ while 1
         case {'sim', 'less', 'switch', 'fault'}
             counter = 1;
             
-            % run simulation
-            Ns = input('Please set the number of harmonics: ');
-            N = input('Please set the number of agents: ');
-            [data, sim] = contour(option, Ns, N);
+            prompt3 = 'Please select the dynamics (integrator/nonholonomic): ';
+            dynamics = input(prompt3, 's');
             
-            % gif
-            plotGif (data, Ns, option);
-            % figures
-            plotFigure(data, sim, option);
+            switch dynamics
+                case {'integrator', 'nonholonomic'}
+                    % run simulation
+                    Ns = input('Please set the number of harmonics: ');
+                    N = input('Please set the number of agents: ');
+                    [data, sim] = contour(option, dynamics, Ns, N);
+                    
+                    % gif
+                    plotGif (data, Ns, option);
+                    % figures
+                    plotFigure(data, sim, option);
+                    
+                otherwise
+                    fprintf('%s\n','Wrong arguments! Please try again.' )
+            end
             
         otherwise
             counter = 1;
             fprintf('%s\n','Wrong arguments! Please try again.' )
     end
-
+    
 end
