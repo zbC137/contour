@@ -66,7 +66,7 @@ title('(d) t = 200s')
 
 figure(4)
 set(gcf,'Position', [400, 200, 600, 500], 'Color', 'White');
-for i=1:2*sim.N
+for i=1:sim.N
     
     plot(data.t, data.u(i, :), 'LineWidth', 1.5, 'Color', 'k'); hold on;
     

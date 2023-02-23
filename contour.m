@@ -16,13 +16,13 @@ sim.s_step = 1/sim.N;
 sim.c = zeros(2*sim.N, 1);      % initial positions and orientations
 for i = 1:1:sim.N
     
-    %     s = i*sim.s_step;
-    %     sim.c(2*i-1) = 8*cos(2*pi*s)*0.2+10;
-    %     sim.c(2*i) = 8*sin(2*pi*s)*0.2;
+%         s = i*sim.s_step;
+%         sim.c(2*i-1) = (8*cos(2*pi*s)*1.1+10)*0.1;
+%         sim.c(2*i) = 8*sin(2*pi*s)*1.1*0.1;
     %     sim.c(2*i-1) = normrnd(5, 2);
     %     sim.c(2*i) = normrnd(5, 2);
     sim.c(2*i-1) = 13;
-    sim.c(2*i) = -8.4+0.4*i;
+    sim.c(2*i) = (-8.4+0.4*i);
     
 end
 sim.c0 = sim.c;
@@ -72,6 +72,7 @@ data.xe = [];
 data.length = [];
 
 if strcmp(dys, 'nonholonomic')
+    param.l = 0.1;
     sim.theta = zeros(sim.N, 1) + pi/2;
     data.theta = sim.theta;
     X0 = [sim.c; sim.theta];
