@@ -33,9 +33,9 @@ while 1
                     [data, sim] = contour(option, dynamics, Ns, N);
                     
                     % gif
-                    plotGif (data, Ns, option);
+                    plotGif (data, Ns, option, dynamics);
                     % figures
-                    plotFigure(data, sim, option);
+                    plotFigure(data, sim, option, dynamics);
                     
                 otherwise
                     fprintf('%s\n','Wrong arguments! Please try again.' )
