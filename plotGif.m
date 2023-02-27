@@ -1,4 +1,4 @@
-function plotGif(data, N, flag)
+function plotGif(data, N, flag, dyn)
 
 close all;
 

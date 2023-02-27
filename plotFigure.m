@@ -1,4 +1,4 @@
-function plotFigure(data, sim, flag)
+function plotFigure(data, sim, flag, dyn)
 
 id = floor(100/sim.step)+1;
 id1 = floor(70/sim.step)+1;
@@ -29,6 +29,13 @@ p1 = plot(data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1), 'k',...
         data.f1.cs(1:2:end,1), data.f1.cs(2:2:end,1),'-.',...
         data.c0(1:2:end), data.c0(2:2:end), 'b*', 'LineWidth', 1.5);
 p1(3).Color = [0.4660 0.95 0.1880];
+
+if strcmp(dyn, 'nonholonomic')
+    hold on;
+    u = cos(data.theta(:, 1));
+    v = sin(data.theta(:, 1));
+    quiver(data.c0(1:2:end), data.c0(2:2:end), u, v, 0.1);
+end
 axis(a);
 title('(a) t = 0s')
 % grid on;
@@ -39,6 +46,13 @@ p2 = plot(data.f1.cd(1:2:end,id1), data.f1.cd(2:2:end,id1), 'k',...
         data.f1.cs(1:2:end,id1), data.f1.cs(2:2:end,id1),'g-.',...
         data.f1.c(1:2:end, id1), data.f1.c(2:2:end, id1), 'b*', 'LineWidth', 1.5);
 p2(3).Color = [0.4660 0.95 0.1880];
+
+if strcmp(dyn, 'nonholonomic')
+    hold on;
+    u = cos(data.theta(:, 701));
+    v = sin(data.theta(:, 701));
+    quiver(data.f1.c(1:2:end, 701), data.f1.c(2:2:end, 701), u, v, 0.1);
+end
 axis(a);
 title('(b) t = 70s')
 % grid on;
@@ -49,6 +63,13 @@ p3 = plot(data.f1.cd(1:2:end,id2), data.f1.cd(2:2:end,id2), 'k',...
         data.f1.cs(1:2:end,id2), data.f1.cs(2:2:end,id2),'g-.',...
         data.f1.c(1:2:end, id2), data.f1.c(2:2:end, id2), 'b*', 'LineWidth', 1.5);
 p3(3).Color = [0.4660 0.95 0.1880];
+
+if strcmp(dyn, 'nonholonomic')
+    hold on;
+    u = cos(data.theta(:, 1401));
+    v = sin(data.theta(:, 1401));
+    quiver(data.f1.c(1:2:end, 1401), data.f1.c(2:2:end, 1401), u, v, 0.1);
+end
 axis(a);
 title('(c) t = 140s')
 % grid on;
@@ -64,6 +85,13 @@ p4 = plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'k',...
         data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end),'g-.',...
         data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), 'b*', 'LineWidth', 1.5);
 p4(3).Color = [0.4660 0.95 0.1880];
+
+if strcmp(dyn, 'nonholonomic')
+    hold on;
+    u = cos(data.theta(:, end));
+    v = sin(data.theta(:, end));
+    quiver(data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), u, v, 0.1);
+end
 axis(a);
 title('(d) t = 200s')
 % grid on;
