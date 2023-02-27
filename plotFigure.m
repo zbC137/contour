@@ -7,7 +7,7 @@ id2 = floor(140/sim.step)+1;
 if strcmp(flag, 'fault')
     a = [-10, 25, -10, 25];
 else
-    a = [-10, 20, -10, 15];
+    a = [-10, 20, -10, 15]*0.1;
 end
 
 figure(2)
@@ -49,9 +49,9 @@ p2(3).Color = [0.4660 0.95 0.1880];
 
 if strcmp(dyn, 'nonholonomic')
     hold on;
-    u = cos(data.theta(:, 701));
-    v = sin(data.theta(:, 701));
-    quiver(data.f1.c(1:2:end, 701), data.f1.c(2:2:end, 701), u, v, 0.1);
+    u = cos(data.theta(:, id1));
+    v = sin(data.theta(:, id1));
+    quiver(data.f1.c(1:2:end, id1), data.f1.c(2:2:end, id1), u, v, 0.1);
 end
 axis(a);
 title('(b) t = 70s')
@@ -66,9 +66,9 @@ p3(3).Color = [0.4660 0.95 0.1880];
 
 if strcmp(dyn, 'nonholonomic')
     hold on;
-    u = cos(data.theta(:, 1401));
-    v = sin(data.theta(:, 1401));
-    quiver(data.f1.c(1:2:end, 1401), data.f1.c(2:2:end, 1401), u, v, 0.1);
+    u = cos(data.theta(:, id2));
+    v = sin(data.theta(:, id2));
+    quiver(data.f1.c(1:2:end, id2), data.f1.c(2:2:end, id2), u, v, 0.1);
 end
 axis(a);
 title('(c) t = 140s')
