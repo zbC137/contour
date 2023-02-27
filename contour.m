@@ -10,7 +10,7 @@ param.step= 0.001;
 %% simulation
 sim.N = N;     % agent number
 sim.t = 200;    % simulation time
-sim.step = 0.1;
+sim.step = 0.032;
 sim.s_step = 1/sim.N;
 
 sim.c = zeros(2*sim.N, 1);      % initial positions and orientations
@@ -21,8 +21,8 @@ for i = 1:1:sim.N
 %         sim.c(2*i) = 8*sin(2*pi*s)*1.1*0.1;
     %     sim.c(2*i-1) = normrnd(5, 2);
     %     sim.c(2*i) = normrnd(5, 2);
-    sim.c(2*i-1) = 13;
-    sim.c(2*i) = (-8.4+0.4*i);
+    sim.c(2*i-1) = 13*0.1;
+    sim.c(2*i) = (-8.4+0.4*i)*0.1;
     
 end
 sim.c0 = sim.c;
@@ -109,8 +109,8 @@ for t = 0:sim.step:sim.t
             x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
             y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
         else
-            x = 0.01*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
-            y = 0.01*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
+            x = 0.001*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
+            y = 0.001*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
         end
         
         data.cd = [data.cd; [x; y]];

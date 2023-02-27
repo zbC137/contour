@@ -1,5 +1,9 @@
 function plotFigure(data, sim, flag)
 
+id = floor(100/sim.step)+1;
+id1 = floor(70/sim.step)+1;
+id2 = floor(140/sim.step)+1;
+
 if strcmp(flag, 'fault')
     a = [-10, 25, -10, 25];
 else
@@ -10,7 +14,7 @@ figure(2)
 set(gcf,'Position', [400, 200, 600, 500], 'Color', 'White');
 plot(data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1), 'k', 'LineWidth', 1.5);
 hold on;
-plot(data.f1.cd(1:2:end,1001), data.f1.cd(2:2:end,1001), 'r','LineWidth', 1.5);
+plot(data.f1.cd(1:2:end,id), data.f1.cd(2:2:end,id), 'r','LineWidth', 1.5);
 hold on;
 plot(data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end), 'b','LineWidth', 1.5);
 set(gca, 'FontSize', 12);
@@ -30,20 +34,20 @@ title('(a) t = 0s')
 % grid on;
 
 subplot('Position', [0.55, 0.55, 0.4, 0.4])
-p2 = plot(data.f1.cd(1:2:end,701), data.f1.cd(2:2:end,701), 'k',...
-        data.f1.cds(1:2:end,701), data.f1.cds(2:2:end,701), 'r--',...
-        data.f1.cs(1:2:end,701), data.f1.cs(2:2:end,701),'g-.',...
-        data.f1.c(1:2:end, 701), data.f1.c(2:2:end, 701), 'b*', 'LineWidth', 1.5);
+p2 = plot(data.f1.cd(1:2:end,id1), data.f1.cd(2:2:end,id1), 'k',...
+        data.f1.cds(1:2:end,id1), data.f1.cds(2:2:end,id1), 'r--',...
+        data.f1.cs(1:2:end,id1), data.f1.cs(2:2:end,id1),'g-.',...
+        data.f1.c(1:2:end, id1), data.f1.c(2:2:end, id1), 'b*', 'LineWidth', 1.5);
 p2(3).Color = [0.4660 0.95 0.1880];
 axis(a);
 title('(b) t = 70s')
 % grid on;
 
 subplot('Position', [0.07, 0.07, 0.4, 0.4])
-p3 = plot(data.f1.cd(1:2:end,1401), data.f1.cd(2:2:end,1401), 'k',...
-        data.f1.cds(1:2:end,1401), data.f1.cds(2:2:end,1401), 'r--',...
-        data.f1.cs(1:2:end,1401), data.f1.cs(2:2:end,1401),'g-.',...
-        data.f1.c(1:2:end, 1401), data.f1.c(2:2:end, 1401), 'b*', 'LineWidth', 1.5);
+p3 = plot(data.f1.cd(1:2:end,id2), data.f1.cd(2:2:end,id2), 'k',...
+        data.f1.cds(1:2:end,id2), data.f1.cds(2:2:end,id2), 'r--',...
+        data.f1.cs(1:2:end,id2), data.f1.cs(2:2:end,id2),'g-.',...
+        data.f1.c(1:2:end, id2), data.f1.c(2:2:end, id2), 'b*', 'LineWidth', 1.5);
 p3(3).Color = [0.4660 0.95 0.1880];
 axis(a);
 title('(c) t = 140s')
