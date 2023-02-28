@@ -1,7 +1,7 @@
 a1 = [data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1)];
 a2 = [data.f1.cds(1:2:end,1), data.f1.cds(2:2:end,1)];
 a3 = [data.f1.cs(1:2:end,1), data.f1.cs(2:2:end,1)];
-a4 = [data.c0(1:2:end), data.c0(2:2:end)];
+a4 = [data.c(1:2:end, 1), data.c(2:2:end, 1)];
 a5 = data.theta(:, 1);
 
 b1 = [data.f1.cd(1:2:end,701), data.f1.cd(2:2:end,701)];
