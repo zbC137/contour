@@ -1,27 +1,26 @@
-a1 = [data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1)];
-a2 = [data.f1.cds(1:2:end,1), data.f1.cds(2:2:end,1)];
-a3 = [data.f1.cs(1:2:end,1), data.f1.cs(2:2:end,1)];
-a4 = [data.c(1:2:end, 1), data.c(2:2:end, 1)];
-a5 = data.theta(:, 1);
+a1 = [data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1),...
+    data.f1.cds(1:2:end,1), data.f1.cds(2:2:end,1),...
+    data.f1.cs(1:2:end,1), data.f1.cs(2:2:end,1)];
+a2 = [data.c(1:2:end, 1), data.c(2:2:end, 1),...
+     data.theta(:, 1), zeros(size(data.theta(:, 1)))+1];
 
-b1 = [data.f1.cd(1:2:end,701), data.f1.cd(2:2:end,701)];
-b2 = [data.f1.cds(1:2:end,701), data.f1.cds(2:2:end,701)];
-b3 = [data.f1.cs(1:2:end,701), data.f1.cs(2:2:end,701)];
-b4 = [data.f1.c(1:2:end, 701), data.f1.c(2:2:end, 701)];
-b5 = data.theta(:, 701);
+b1 = [data.f1.cd(1:2:end,701), data.f1.cd(2:2:end,701),...
+    data.f1.cds(1:2:end,701), data.f1.cds(2:2:end,701),...
+    data.f1.cs(1:2:end,701), data.f1.cs(2:2:end,701)];
+b2 = [data.f1.c(1:2:end, 701), data.f1.c(2:2:end, 701),...
+   data.theta(:, 701),  zeros(size(data.theta(:, 1)))+1];
 
-c1= [data.f1.cd(1:2:end,1401), data.f1.cd(2:2:end,1401)];
-c2 = [data.f1.cds(1:2:end,1401), data.f1.cds(2:2:end,1401)];
-c3 = [data.f1.cs(1:2:end,1401), data.f1.cs(2:2:end,1401)];
-c4 = [data.f1.c(1:2:end, 1401), data.f1.c(2:2:end, 1401)];
-c5 = data.theta(:, 1401);
+c1= [data.f1.cd(1:2:end,1401), data.f1.cd(2:2:end,1401),...
+    data.f1.cds(1:2:end,1401), data.f1.cds(2:2:end,1401),...
+    data.f1.cs(1:2:end,1401), data.f1.cs(2:2:end,1401)];
+c2 = [data.f1.c(1:2:end, 1401), data.f1.c(2:2:end, 1401),...
+    data.theta(:, 1401), zeros(size(data.theta(:, 1)))+1];
 
-d1 = [data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end)];
-d2 = [data.f1.cds(1:2:end,end), data.f1.cds(2:2:end,end)];
-d3 = [ data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end)];
-d4 = [data.f1.c(1:2:end, end), data.f1.c(2:2:end, end)];
-d5 = data.theta(:, end);
+d1 = [data.f1.cd(1:2:end,end), data.f1.cd(2:2:end,end),...
+    data.f1.cds(1:2:end,end), data.f1.cds(2:2:end,end),...
+    data.f1.cs(1:2:end,end), data.f1.cs(2:2:end,end)];
+d2 = [data.f1.c(1:2:end, end), data.f1.c(2:2:end, end),...
+    data.theta(:, end), zeros(size(data.theta(:, 1)))+1];
 
-t = data.t';
-dcoff = abs(data.dcoff');
-e = abs(data.e');
+dcoff = [data.t', abs(data.dcoff')];
+e = [data.t', abs(data.e')];
