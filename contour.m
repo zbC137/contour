@@ -81,6 +81,7 @@ data.f1.c = [];
 data.e = [];
 data.xe = [];
 data.length = [];
+data.lim = [];
 
 % controller parameters
 ctrl.k = 2;
@@ -177,6 +178,9 @@ for t = 0:sim.step:sim.t
         X0 = Temp(end,:)';
         sim.c = X0;
     end
+    
+    limE = norm((pinv(sim.Gs)*sim.Gs-eye(26))*param.coff-sim.dcoff);
+    data.lim = [data.lim; limE];
     
     % saving data
     data.t = [data.t, t];
