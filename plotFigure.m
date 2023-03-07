@@ -7,7 +7,7 @@ id2 = floor(140/sim.step)+1;
 if strcmp(flag, 'fault')
     a = [-10, 25, -10, 25];
 else
-    a = [-10, 20, -10, 15]*0.1;
+    a = [-10, 20, -10, 15];
 end
 
 figure(2)
@@ -27,14 +27,14 @@ subplot('Position', [0.07, 0.55 0.4, 0.4])
 p1 = plot(data.f1.cd(1:2:end,1), data.f1.cd(2:2:end,1), 'k',...
         data.f1.cds(1:2:end,1), data.f1.cds(2:2:end,1), 'r--',...
         data.f1.cs(1:2:end,1), data.f1.cs(2:2:end,1),'-.',...
-        data.c0(1:2:end), data.c0(2:2:end), 'b*', 'LineWidth', 1.5);
+        data.c(1:2:end,1), data.c(2:2:end,1), 'b*', 'LineWidth', 1.5);
 p1(3).Color = [0.4660 0.95 0.1880];
 
 if strcmp(dyn, 'nonholonomic')
     hold on;
     u = cos(data.theta(:, 1));
     v = sin(data.theta(:, 1));
-    quiver(data.c0(1:2:end), data.c0(2:2:end), u, v, 0.1);
+    quiver(data.c(1:2:end,1), data.c(2:2:end,1), u, v, 0.1);
 end
 axis(a);
 title('(a) t = 0s')
@@ -174,6 +174,12 @@ plot(data.t, data.length(1,:), 'LineWidth', 1, 'Color', 'r');
 hold on;
 plot(data.t, data.length(sim.N+2:end,:), 'LineWidth', 1, 'Color', 'k');
 grid on;
+
+if strcmp(dyn, 'nonholonomic')
+    figure(9)
+    plot(data.t, data.theta(:, 1:size(data.t, 2)), 'LineWidth', 1, 'Color', 'k');
+    grid on;
+end
 
 end
 

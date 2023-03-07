@@ -10,7 +10,7 @@ param.step= 0.001;
 %% simulation
 sim.N = N;     % agent number
 sim.t = 200;    % simulation time
-sim.step = 0.032;
+sim.step = 0.1;
 sim.s_step = 1/sim.N;
 
 sim.c = zeros(2*sim.N, 1);      % initial positions and orientations
@@ -21,11 +21,10 @@ for i = 1:1:sim.N
 %         sim.c(2*i) = 8*sin(2*pi*s)*1.1*0.1;
     %     sim.c(2*i-1) = normrnd(5, 2);
     %     sim.c(2*i) = normrnd(5, 2);
-    sim.c(2*i-1) = 13*0.1;
-    sim.c(2*i) = (-8.4+0.4*i)*0.1;
+    sim.c(2*i-1) = 13;
+    sim.c(2*i) = (-8.4+0.5*i);
     
 end
-sim.c0 = sim.c;
 
 sim.Gs = generate_Gs(0, sim.s_step, 1-sim.s_step/2, param.Ns);
 
@@ -56,6 +55,19 @@ end
 param.G_cl = generate_Gs(0, 1/2400, 1, param.Ns);
 % size(param.G_cl);
 
+if strcmp(dys, 'nonholonomic')
+    param.l = 0.1;
+    sim.theta = zeros(sim.N, 1) + pi;
+    data.theta = sim.theta;
+    X0 = [sim.c; sim.theta];
+    for i=1:sim.N
+        sim.c(2*i-1) = sim.c(2*i-1)+0.01*cos(sim.theta(i));
+        sim.c(2*i) = sim.c(2*i)+0.01*sin(sim.theta(i));
+    end
+else
+    X0 = sim.c;
+end
+
 % data recording
 % data.ref = sim.Gs*param.coff;
 data.u = [];
@@ -66,19 +78,10 @@ data.f1.cd = [];
 data.f1.cds = [];
 data.f1.cs = [];
 data.f1.c = [];
-data.c0 = sim.c;
 data.e = [];
 data.xe = [];
 data.length = [];
-
-if strcmp(dys, 'nonholonomic')
-    param.l = 0.1;
-    sim.theta = zeros(sim.N, 1) + pi/2;
-    data.theta = sim.theta;
-    X0 = [sim.c; sim.theta];
-else
-    X0 = sim.c;
-end
+data.lim = [];
 
 % controller parameters
 ctrl.k = 2;
@@ -109,8 +112,8 @@ for t = 0:sim.step:sim.t
             x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
             y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
         else
-            x = 0.001*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
-            y = 0.001*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
+            x = 0.01*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
+            y = 0.01*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
         end
         
         data.cd = [data.cd; [x; y]];
@@ -161,6 +164,10 @@ for t = 0:sim.step:sim.t
         X0 = Temp(end,:)';
         sim.c = X0(1:2*sim.N);
         sim.theta = X0(2*sim.N+1:end);
+        for i=1:sim.N
+            sim.c(2*i-1) = sim.c(2*i-1)+0.01*cos(sim.theta(i));
+            sim.c(2*i) = sim.c(2*i)+0.01*sin(sim.theta(i));
+        end
         
         data.theta = [data.theta, sim.theta];
     else
@@ -171,6 +178,9 @@ for t = 0:sim.step:sim.t
         X0 = Temp(end,:)';
         sim.c = X0;
     end
+    
+    limE = norm((pinv(sim.Gs)*sim.Gs-eye(26))*param.coff-sim.dcoff);
+    data.lim = [data.lim; limE];
     
     % saving data
     data.t = [data.t, t];
