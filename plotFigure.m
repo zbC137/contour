@@ -34,7 +34,7 @@ if strcmp(dyn, 'nonholonomic')
     hold on;
     u = cos(data.theta(:, 1));
     v = sin(data.theta(:, 1));
-    quiver(data.c(1:2:end,1), data.c(2:2:end,1), u, v, 0.1);
+    quiver(data.c(1:2:end,1), data.c(2:2:end,1), u, v, 1);
 end
 axis(a);
 title('(a) t = 0s')
@@ -51,7 +51,7 @@ if strcmp(dyn, 'nonholonomic')
     hold on;
     u = cos(data.theta(:, id1));
     v = sin(data.theta(:, id1));
-    quiver(data.f1.c(1:2:end, id1), data.f1.c(2:2:end, id1), u, v, 0.1);
+    quiver(data.f1.c(1:2:end, id1), data.f1.c(2:2:end, id1), u, v, 0.5);
 end
 axis(a);
 title('(b) t = 70s')
@@ -68,7 +68,7 @@ if strcmp(dyn, 'nonholonomic')
     hold on;
     u = cos(data.theta(:, id2));
     v = sin(data.theta(:, id2));
-    quiver(data.f1.c(1:2:end, id2), data.f1.c(2:2:end, id2), u, v, 0.1);
+    quiver(data.f1.c(1:2:end, id2), data.f1.c(2:2:end, id2), u, v, 0.5);
 end
 axis(a);
 title('(c) t = 140s')
@@ -90,7 +90,7 @@ if strcmp(dyn, 'nonholonomic')
     hold on;
     u = cos(data.theta(:, end));
     v = sin(data.theta(:, end));
-    quiver(data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), u, v, 0.1);
+    quiver(data.f1.c(1:2:end, end), data.f1.c(2:2:end, end), u, v, 0.5);
 end
 axis(a);
 title('(d) t = 200s')

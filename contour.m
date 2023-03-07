@@ -15,10 +15,10 @@ sim.s_step = 1/sim.N;
 
 sim.c = zeros(2*sim.N, 1);      % initial positions and orientations
 for i = 1:1:sim.N
-    
+%     
 %         s = i*sim.s_step;
 %         sim.c(2*i-1) = (8*cos(2*pi*s)*1.1+10)*0.1;
-%         sim.c(2*i) = 8*sin(2*pi*s)*1.1*0.1;
+%         sim.c(2*i) = -8*sin(2*pi*s)*1.1*0.1;
     %     sim.c(2*i-1) = normrnd(5, 2);
     %     sim.c(2*i) = normrnd(5, 2);
     sim.c(2*i-1) = 13;
@@ -57,13 +57,17 @@ param.G_cl = generate_Gs(0, 1/2400, 1, param.Ns);
 
 if strcmp(dys, 'nonholonomic')
     param.l = 0.1;
-    sim.theta = zeros(sim.N, 1) + pi;
-    data.theta = sim.theta;
-    X0 = [sim.c; sim.theta];
+    sim.theta = zeros(sim.N, 1); %+ pi;
+    %data.theta = sim.theta;
+    %X0 = [sim.c; sim.theta];
     for i=1:sim.N
         sim.c(2*i-1) = sim.c(2*i-1)+0.01*cos(sim.theta(i));
         sim.c(2*i) = sim.c(2*i)+0.01*sin(sim.theta(i));
+%         sim.theta(i) = i/sim.N*pi;
+        sim.theta(i) = pi;
     end
+    data.theta = sim.theta;
+    X0 = [sim.c; sim.theta];
 else
     X0 = sim.c;
 end
