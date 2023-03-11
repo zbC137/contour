@@ -86,6 +86,7 @@ data.e = [];
 data.xe = [];
 data.length = [];
 data.lim = [];
+data.coff = [];
 
 % controller parameters
 ctrl.k = 2;
@@ -147,6 +148,7 @@ for t = 0:sim.step:sim.t
         
     end
     data.cds = param.Gs*param.coff;
+    data.coff = [data.coff, param.coff];
     
     data.e = [data.e, sim.c-sim.Gs*param.coff];
     data.xe = [data.xe, sim.Gs*pinv(sim.Gs)*sim.c-sim.Gs*param.coff];

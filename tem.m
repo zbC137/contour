@@ -26,6 +26,6 @@ d2 = [data.f1.c(1:2:end, end), data.f1.c(2:2:end, end),...
     data.f1.c(1:2:end, end), data.f1.c(2:2:end, end),...
     data.theta(:, end), zeros(size(data.theta(:, 1)))+6];
 
-dcoff = [data.t', abs(data.dcoff')];
-e = [data.t', abs(data.e')];
+dcoff = [data.t', vecnorm(data.dcoff)'];
+e = [data.t', vecnorm(data.e)'];
 theta = [data.t', data.theta(:, 1:2001)'];

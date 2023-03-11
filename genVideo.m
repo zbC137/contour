@@ -26,14 +26,14 @@ open(aviobj); %    打开对象
 
 for i = 1:5:N
     set(gcf, 'Color', 'White');
-    plot(data.f1.cd(1:2:end,i), data.f1.cd(2:2:end,i), 'k',...
+    plot(data.f1.cd(1:2:end,i), data.f1.cd(2:2:end,i), 'b',...
         data.f1.cds(1:2:end,i), data.f1.cds(2:2:end,i), 'r--',...
-        data.c(1:2:end,i), data.c(2:2:end,i), 'b*', 'LineWidth', 1.5);
+        data.c(1:2:end,i), data.c(2:2:end,i), 'k*', 'LineWidth', 1.5);
     hold on;
     u = cos(data.theta(:, i));
     v = sin(data.theta(:, i));
-    quiver(data.c(1:2:end,i), data.c(2:2:end,i), u, v, 0.2, ...,
-        'Color', '#77AC30', 'LineWidth', 1.5);
+    quiver(data.c(1:2:end,i), data.c(2:2:end,i), u, v, 'AutoScale', 'off', ...
+        'Color', 'k', 'LineWidth', 1.5);
     axis(a); 
     set(gca, 'FontSize', 12);
     title('Simulation Results');
