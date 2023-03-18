@@ -15,11 +15,11 @@ while 1
         end
     end
     
-    prompt2 = 'Please select a simulation (sim/less/switch/fault): ';
+    prompt2 = 'Please select a simulation (sim/less/switch/fault/mixed): ';
     option = input(prompt2, 's');
     
     switch option
-        case {'sim', 'less', 'switch', 'fault'}
+        case {'sim', 'less', 'switch', 'fault', 'mixed'}
             counter = 1;
             
             prompt3 = 'Please select the dynamics (integrator/nonholonomic): ';

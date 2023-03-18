@@ -4,7 +4,7 @@ id = floor(100/sim.step)+1;
 id1 = floor(70/sim.step)+1;
 id2 = floor(140/sim.step)+1;
 
-if strcmp(flag, 'fault')
+if strcmp(flag, 'fault') || strcmp(flag, 'mixed')
     a = [-10, 25, -10, 25];
 else
     a = [-10, 20, -10, 15];

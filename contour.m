@@ -10,6 +10,7 @@ param.step= 0.001;
 %% simulation
 sim.N = N;     % agent number
 sim.t = 200;    % simulation time
+% sim.t = 18;
 sim.step = 0.1;
 sim.s_step = 1/sim.N;
 
@@ -19,10 +20,10 @@ for i = 1:1:sim.N
 %         s = i*sim.s_step;
 %         sim.c(2*i-1) = (8*cos(2*pi*s)*1.1+10)*0.1;
 %         sim.c(2*i) = -8*sin(2*pi*s)*1.1*0.1;
-    %     sim.c(2*i-1) = normrnd(5, 2);
-    %     sim.c(2*i) = normrnd(5, 2);
-    sim.c(2*i-1) = 13;
-    sim.c(2*i) = (-8.4+0.5*i);
+        sim.c(2*i-1) = normrnd(10, 3);
+        sim.c(2*i) = normrnd(0, 3);
+%     sim.c(2*i-1) = 13;
+%     sim.c(2*i) = (-8.4+0.5*i);
     
 end
 
@@ -64,7 +65,8 @@ if strcmp(dys, 'nonholonomic')
         sim.c(2*i-1) = sim.c(2*i-1)+0.01*cos(sim.theta(i));
         sim.c(2*i) = sim.c(2*i)+0.01*sin(sim.theta(i));
 %         sim.theta(i) = i/sim.N*pi;
-        sim.theta(i) = pi;
+%         sim.theta(i) = pi;
+        sim.theta(i) = normrnd(pi/2, pi/2);
     end
     data.theta = sim.theta;
     X0 = [sim.c; sim.theta];
@@ -116,9 +118,27 @@ for t = 0:sim.step:sim.t
         if strcmp(option, 'fault')
             x = 0.01*(4*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*cos(2*pi*s));
             y = 0.01*(2*t+(t*sin(4*pi*s)+2*t*cos(10*pi*s)+800)*sin(2*pi*s));
+        elseif strcmp(option, 'mixed')
+            %             if t<sim.t/3
+            if t<sim.t/2
+                x = 0.01*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
+                y = 0.01*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
+%                 x = -7+10*cos(2*pi*s);
+%                 y = 10*sin(2*pi*s);
+%             elseif t<2*sim.t/3
+%                 x = 8*cos(2*pi*s);
+%                 y = 12*sin(2*pi*s);
+            else
+                x = 0.01*(4*(t-100)+((t-100)*sin(4*pi*s)+2*(t-100)*cos(10*pi*s)+800)*cos(2*pi*s));
+                y = 0.01*(2*(t-100)+((t-100)*sin(4*pi*s)+2*(t-100)*cos(10*pi*s)+800)*sin(2*pi*s));
+%                 x = 4+(8*(1-sin(2*pi*s)))*cos(2*pi*s);
+%                 y = 4+ (8*(1-sin(2*pi*s)))*sin(2*pi*s);
+            end
         else
             x = 0.01*(4*t+(t*sin(4*pi*s)+800)*cos(2*pi*s));
             y = 0.01*(4*t+(t*cos(4*pi*s)+800)*sin(2*pi*s));
+%             x = (4+0.05*t)*(2-2.^(sin(5*2*pi*s))).*cos(2*pi*s);
+%             y = (4+0.05*t)*(2-2.^(sin(5*2*pi*s))).*sin(2*pi*s);
         end
         
         data.cd = [data.cd; [x; y]];
@@ -168,6 +188,13 @@ for t = 0:sim.step:sim.t
         
         % update
         X0 = Temp(end,:)';
+        for h=1:sim.N
+            if X0(2*sim.N+h)>2*pi
+                X0(2*sim.N+h) = X0(2*sim.N+h)-2*pi;
+            elseif X0(2*sim.N+h)<0
+                X0(2*sim.N+h) = X0(2*sim.N+h)+2*pi;
+            end
+        end
         sim.c = X0(1:2*sim.N);
         sim.theta = X0(2*sim.N+1:end);
         for i=1:sim.N

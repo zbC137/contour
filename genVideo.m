@@ -12,7 +12,7 @@ rate = 30;
 quality = 100;
 
 if strcmp(dat, 'fault')
-    a = [-10, 25, -10, 25];
+    a = [-25, 25, -20, 20];
 else
     a = [-10, 20, -10, 15];
 end
